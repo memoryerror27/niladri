@@ -34,7 +34,6 @@ class Recorder:
 
         # Increase limit by 20% to distinguish speech from noise better.
         self.min_energy_limit = avg_energy + avg_energy / 5
-        print(avg_energy)
 
     def record(self, timeout=5):
         audio_frames = []
@@ -46,12 +45,11 @@ class Recorder:
             input=True,
         )
         self.calibrate_energy_threshold(audio_stream)
-        print('Recording')
+
         # Record audio from audio_stream.
         while True:
             frame = audio_stream.read(self.chunk_size)
             energy = self._get_frame_energy(frame)
-            print(energy)
             silence_duration_seconds = self.silence_frame_count * self.seconds_per_frame
             # Check if user is silent for more than the limit.
             if energy < self.min_energy_limit:
